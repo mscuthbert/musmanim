@@ -1,0 +1,6 @@
+# This file is used internally by FFMPEG.
+file 'file:/Users/cuthbert/git/musmanim/media/videos/scene1/480p15/partial_movie_files/NoteValues/3163782288_2945332988_223132457.mp4'
+file 'file:/Users/cuthbert/git/musmanim/media/videos/scene1/480p15/partial_movie_files/NoteValues/2201830969_2974246066_2434855421.mp4'
+file 'file:/Users/cuthbert/git/musmanim/media/videos/scene1/480p15/partial_movie_files/NoteValues/2201830969_1733338889_50994154.mp4'
+file 'file:/Users/cuthbert/git/musmanim/media/videos/scene1/480p15/partial_movie_files/NoteValues/2201830969_469583619_744726456.mp4'
+file 'file:/Users/cuthbert/git/musmanim/media/videos/scene1/480p15/partial_movie_files/NoteValues/2201830969_1733338889_1082449429.mp4'

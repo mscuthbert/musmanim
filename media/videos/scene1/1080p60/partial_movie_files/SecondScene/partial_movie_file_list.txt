@@ -1,0 +1,10 @@
+# This file is used internally by FFMPEG.
+file 'file:/Users/cuthbert/git/musmanim/media/videos/scene1/1080p60/partial_movie_files/SecondScene/450974505_2648471766_223132457.mp4'
+file 'file:/Users/cuthbert/git/musmanim/media/videos/scene1/1080p60/partial_movie_files/SecondScene/34786186_2533223435_398092712.mp4'
+file 'file:/Users/cuthbert/git/musmanim/media/videos/scene1/1080p60/partial_movie_files/SecondScene/34786186_1624178251_2859054643.mp4'
+file 'file:/Users/cuthbert/git/musmanim/media/videos/scene1/1080p60/partial_movie_files/SecondScene/34786186_3920996898_2151653637.mp4'
+file 'file:/Users/cuthbert/git/musmanim/media/videos/scene1/1080p60/partial_movie_files/SecondScene/34786186_3981131176_1916845704.mp4'
+file 'file:/Users/cuthbert/git/musmanim/media/videos/scene1/1080p60/partial_movie_files/SecondScene/34786186_3946683132_2706078853.mp4'
+file 'file:/Users/cuthbert/git/musmanim/media/videos/scene1/1080p60/partial_movie_files/SecondScene/34786186_3638504700_3871819536.mp4'
+file 'file:/Users/cuthbert/git/musmanim/media/videos/scene1/1080p60/partial_movie_files/SecondScene/34786186_2466745601_3449714055.mp4'
+file 'file:/Users/cuthbert/git/musmanim/media/videos/scene1/1080p60/partial_movie_files/SecondScene/34786186_3638504700_1385914319.mp4'
