@@ -1,6 +1,0 @@
-# This file is used internally by FFMPEG.
-file 'file:/Users/cuthbert/git/musmanim/media/videos/scene1/480p15/partial_movie_files/IntroScene/3163782288_637782258_223132457.mp4'
-file 'file:/Users/cuthbert/git/musmanim/media/videos/scene1/480p15/partial_movie_files/IntroScene/2201830969_2974246066_644176386.mp4'
-file 'file:/Users/cuthbert/git/musmanim/media/videos/scene1/480p15/partial_movie_files/IntroScene/2201830969_1733338889_1415147760.mp4'
-file 'file:/Users/cuthbert/git/musmanim/media/videos/scene1/480p15/partial_movie_files/IntroScene/2201830969_469583619_2924886503.mp4'
-file 'file:/Users/cuthbert/git/musmanim/media/videos/scene1/480p15/partial_movie_files/IntroScene/2201830969_1733338889_1853173525.mp4'
