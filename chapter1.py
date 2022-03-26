@@ -560,6 +560,7 @@ class Scene6_Imperfection(Scene):
         def shrink_and_triple_width(points):
             return points * np.array([3, .25, 1])
 
+
         br2 = br.copy()
         br2.add()
 
@@ -600,12 +601,7 @@ class Scene6_Imperfection(Scene):
         self.wait()
 
         # confused.
-        for i in range(4):
-            left_shift = 0.5 if i else 0.25
-            right_shift = 0.5 if i < 3 else 0.25
-            self.play(br4.animate.shift(LEFT*left_shift), run_time=0.5 - i/10)
-            self.play(br4.animate.shift(RIGHT*right_shift), run_time=0.5 - i/10)
-
+        self.play(Confused(br4, run_time=4.0, num_reps=3, distance=0.25))
         self.play(Agitate(br4))
 
         self.wait()
@@ -644,6 +640,129 @@ class Scene6_Imperfection(Scene):
         # self.play(br4.animate.shift(LEFT * 0.9))
         self.play(Agitate(br4))
         self.wait()
+
+
+        # breve tries to cuddle up to longa instead.
+
+
+        def shrink_right_side(obj, scale_ratio, critical_point=LEFT, other_scale=1.0,
+                              **animate_kwargs):
+            left_side: np.ndarray = obj.get_critical_point(critical_point)
+            self.play(obj.animate.apply_points_function_about_point(
+                lambda points: (points - left_side) * np.array((scale_ratio, other_scale, 1)) + left_side
+            ), **animate_kwargs)
+
+        self.play(br4.animate.next_to(longa, RIGHT, buff=0.05), run_time=0.4)
+        self.wait()
+        shrink_right_side(longa, .9)
+        self.play(Agitate(br4, num_reps=1))
+        self.play(br4.animate.next_to(longa, RIGHT, buff=0.05), run_time=0.4)
+        self.wait(0.5)
+        shrink_right_side(longa, .9, run_time=0.5)
+        self.play(Agitate(br4, num_reps=1), run_time=0.3)
+        self.play(br4.animate.next_to(longa, RIGHT, buff=0.05), run_time=0.2)
+
+        remainder = (2/3) / (.9*.9)  # get to 2/3
+        shrink_right_side(longa, remainder, run_time=0.5)
+        self.play(br4.animate.next_to(longa, RIGHT, buff=0.05), run_time=0.2)
+        self.wait()
+        self.play(Agitate(VGroup(longa, br4)))
+        self.wait(3)
+
+        # now with breve at top.
+
+        def shrink_left_side(obj, scale_ratio, **animate_kwargs):
+            right_side: np.ndarray = obj.get_right()
+            self.play(obj.animate.apply_points_function_about_point(
+                lambda points: (points - right_side) * np.array((scale_ratio, 1, 1)) + right_side
+            ), **animate_kwargs)
+
+        self.play(br4.animate.shift(UP))
+        self.wait()
+        shrink_right_side(longa, 1.5)  # grow, actually...
+        self.wait()
+        self.play(br4.animate.align_to(longa, LEFT))
+        self.wait()
+        shrink_left_side(longa, 2/3)
+        self.play(br4.animate.next_to(longa, LEFT, buff=0.05))
+        self.wait(4)
+        perf_g1 = VGroup(b_longa, br4, longa)
+        perf_g2 = VGroup(b_br_g, br_g)
+        self.play(perf_g1.animate.shift(RIGHT*3),
+                  perf_g2.animate.shift(RIGHT*2),
+                  )
+        self.wait()
+
+        longa2 = Longa(color=GREEN).shift(LEFT*3)
+        self.play(Bounce(longa2, bound=-0.2))
+        br2_longa2 = Breve(color=GREEN).set_x(longa2.get_x()).set_y(longa2.get_y())
+        self.play(Transform(longa2, br2_longa2), run_time=0.2)
+        shrink_right_side(longa2, 3.0, RIGHT, 0.25, run_time=0.5)
+        self.play(longa2.animate.shift(UP*.2), run_time=0.2)
+        self.wait()
+        b_longa2 = Brace(longa2, DOWN)
+        self.play(FadeIn(b_longa2))
+        self.wait(3)
+
+        self.play(Agitate(br4))
+        self.wait(4)
+        shrink_right_side(longa2, 2/3, run_time=0.5)
+        self.play(br4.animate.next_to(longa2, RIGHT, buff=0.05))
+        shrink_left_side(longa, 3/2, run_time=0.5)
+        self.wait()
+
+        perf_1 = VGroup(longa2, br4, b_longa2)
+        perf_2 = VGroup(longa, b_longa)
+        perf_3 = VGroup(br2, br, br3, b_br_g)
+        all_gr = VGroup(perf_1, perf_2, perf_3)
+
+        self.play(all_gr.animate.scale(0.8))
+        self.play(perf_3.animate.shift(RIGHT),
+                  perf_2.animate.shift(RIGHT*1.6),
+                  perf_1.animate.shift(RIGHT*2.2),
+                  )
+        self.wait()
+
+        # drop in another perfect long.
+        longa3 = longa.copy().next_to(perf_1, LEFT, buff=0.2)
+        self.play(Bounce(longa3))
+        b_longa3 = b_longa.copy().next_to(longa3, DOWN)
+        self.play(FadeIn(b_longa3),
+                  longa3.animate.shift(DOWN * 0.05),
+                  run_time=0.5)
+        self.wait(2)
+
+        self.play(br4.animate.shift(UP * .6))
+        self.wait()
+        shrink_right_side(longa2, 1.5)  # grow, actually...
+        shrink_right_side(longa3, 2/3)
+        self.play(br4.animate.set_x(longa3.get_x() + 1))
+        self.play(br4.animate.next_to(longa3, RIGHT, buff=0.05))
+        self.wait(3)
+
+        self.play(br4.animate.shift(UP * .6))
+        self.wait()
+        shrink_right_side(longa3, 1.5)  # grow, actually...
+        self.play(br4.animate.align_to(longa3, LEFT))
+        self.play(br4.animate.move_to(longa3, LEFT),
+                  longa3.animate.shift(RIGHT),
+                  longa2.animate.shift(RIGHT),
+                  longa.animate.shift(RIGHT),
+                  br2.animate.shift(RIGHT),
+                  br.animate.shift(RIGHT),
+                  br3.animate.shift(RIGHT * 1.2),
+                  b_br_g.animate.shift(RIGHT * 0.2),
+                  )
+        self.wait()
+        self.play(Agitate(br3))
+        shrink_right_side(longa, .6)
+        self.play(br2.animate.shift(LEFT * .8),
+                  br.animate.shift(LEFT * .8),
+                  br3.animate.shift(LEFT * 1),
+                  )
+        self.wait()
+
+
 
 
 

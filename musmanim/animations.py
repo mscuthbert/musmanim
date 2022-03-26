@@ -1,6 +1,7 @@
 import math
 
 import manim as m
+# noinspection PyProtectedMember
 from manim.utils.rate_functions import ease_in_out_sine
 
 
@@ -70,58 +71,12 @@ class Bounce(m.Animation):
         return self
 
 
-class Agitate(m.Animation):
-    def __init__(self, *args, num_reps=4, distance=0.15, **kwargs):
+class ExcitedBase(m.Animation):
+    def __init__(self, *args, num_reps=4, distance=0.15, drift=0.0, **kwargs):
         super().__init__(*args, **kwargs)
         self.num_reps = num_reps
         self.distance = distance
-
-    def alpha_to_shift_amount(self, alpha: float) -> float:
-        '''
-        given alpha, how much percentage shift should we do? from 1.0 to -1.0
-
-        We start at origin, ascend distance, then we start descending.
-        The start of the descent is the start of a "zone".  We descend
-        twice distance, return up twice distance.  End of zone.
-        Repeat times num_reps.  At end, return to origin:
-        num_reps = 2:
-
-            /\  /\  /\
-              \/  \/
-
-        we always start by going up because agitated people leap before
-        sulking.
-        '''
-        # see Confused.alpha_to_shift_amount for a better way to do this...
-
-        animation_zone_quarter_size = 1/(self.num_reps*4 + 2)
-        animation_zone_size = animation_zone_quarter_size * 4
-        # not 0-1 but 0.3-1.3
-        # will make zone calculations easier, since we start 3/4 of the way
-        # into a zone.
-        shifted_alpha = alpha + animation_zone_quarter_size*3
-        _zone_num, remainder = divmod(shifted_alpha, animation_zone_size)
-        position_in_zone = remainder / animation_zone_size
-        abs_distance_from_middle_of_zone = 2 * abs(position_in_zone - 0.5)
-        eased_abs_distance = self.rate_func(abs_distance_from_middle_of_zone)
-        return round(eased_abs_distance*2 - 1, 6)
-
-    def interpolate_submobject(
-        self,
-        submobject: m.Mobject,
-        starting_submobject: m.Mobject,
-        alpha: float,
-    ) -> m.Animation:
-        shift_dist = self.alpha_to_shift_amount(alpha)
-        submobject.set_y(shift_dist * self.distance + self.starting_mobject.get_y())
-        return self
-
-
-class Confused(m.Animation):
-    def __init__(self, *args, num_reps=4, distance=0.15, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.num_reps = num_reps
-        self.distance = distance
+        self.drift = drift
 
     def alpha_to_shift_amount(self, alpha):
         if alpha == 1:
@@ -137,3 +92,33 @@ class Confused(m.Animation):
             return ease_in_out_sine(last_quadrant_progress) - 1
 
         return math.sin(self.num_reps * m.PI * 2 * alpha)
+
+
+class Agitate(ExcitedBase):
+    def interpolate_submobject(
+        self,
+        submobject: m.Mobject,
+        starting_submobject: m.Mobject,
+        alpha: float,
+    ) -> m.Animation:
+        shift_dist = self.alpha_to_shift_amount(alpha)
+        submobject.set_y(shift_dist * self.distance
+                         + self.starting_mobject.get_y()
+                         + self.drift * alpha)
+        return self
+
+
+class Confused(ExcitedBase):
+    def interpolate_submobject(
+        self,
+        submobject: m.Mobject,
+        starting_submobject: m.Mobject,
+        alpha: float,
+    ) -> m.Animation:
+        # doubly smooth.
+        shift_dist = self.alpha_to_shift_amount(self.rate_func(alpha))
+        submobject.set_x(shift_dist * self.distance
+                         + self.starting_mobject.get_x()
+                         + self.drift * alpha
+                         )
+        return self
